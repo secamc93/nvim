@@ -317,56 +317,26 @@ use {
   'akinsho/nvim-toggleterm.lua',
   config = function()
     require("toggleterm").setup{
-      direction = 'float',
-      float_opts = {
-        border = 'curved',
-        width = 100,
-        height = 30,
-      }
+      direction = 'horizontal',
+      size = 15,  -- Ajusta el tamaño de la terminal según tus preferencias
     }
   end
 }
-
--- Configurar vim-go para usar la terminal flotante
+vim.api.nvim_set_keymap('n', 'tt', ':ToggleTerm<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('t', 'tt', '<C-\\><C-n>:ToggleTerm<CR>', { noremap = true, silent = true })
+-- Vim test Go
 use {
-  'fatih/vim-go',
-  run = ':GoUpdateBinaries',
+  'vim-test/vim-test',
   config = function()
-    -- Habilitar resaltado de errores
-    vim.g.go_highlight_trailing_whitespace_error = 1
-    vim.g.go_highlight_extra_types = 1
-    vim.g.go_highlight_operators = 1
-    vim.g.go_highlight_functions = 1
-    vim.g.go_highlight_function_calls = 1
-    vim.g.go_highlight_types = 1
-    vim.g.go_highlight_fields = 1
-    vim.g.go_highlight_build_constraints = 1
-
-    -- Configurar GoLint para resaltar errores
-    vim.g.go_metalinter_enabled = {'golint', 'errcheck'}
-    vim.g.go_metalinter_autosave = 1
-    vim.g.go_metalinter_deadline = '5s'
-
-    -- Configurar GoTest para resaltar errores en pruebas
-    vim.g.go_test_show_name = 1
-    vim.g.go_test_show_errors = 1
-
-    -- Redefinir comandos de prueba para usar la terminal flotante
     vim.cmd([[
-      function! GoTestFloat()
-        execute 'ToggleTerm direction=float cmd="go test ./..."'
-      endfunction
-
-      command! GoTest call GoTestFloat()
+      let test#strategy = "toggleterm"
+      let test#toggleterm#position = 'horizontal'
     ]])
   end
 }
-
-    
-
-
-
-
+-- Mapeo del comando TestNearest a t + n
+vim.api.nvim_set_keymap('n', 'tn', ':TestNearest<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 'tf', ':TestFile<CR>', { noremap = true, silent = true })
   -- Copilot para autocompletado inteligente
   use 'github/copilot.vim'
 
